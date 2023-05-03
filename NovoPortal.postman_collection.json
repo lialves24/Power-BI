@@ -1,0 +1,229 @@
+{
+	"info": {
+		"_postman_id": "9dcba674-42d7-402f-81ef-78aff2993594",
+		"name": "NovoPortal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "21444931"
+	},
+	"item": [
+		{
+			"name": "POST - Gerar_Token",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "joao.pelisson@labsoft.com.br",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "Qu@dr@d0",
+							"type": "text"
+						},
+						{
+							"key": "audience",
+							"value": "Portal_API",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "Portal_API_Read",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "Portal_React_Dev",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://labsoft-identitycenter-sts.mylimsweb.cloud/connect/token",
+					"protocol": "https",
+					"host": [
+						"labsoft-identitycenter-sts",
+						"mylimsweb",
+						"cloud"
+					],
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - ReportsPortal",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar a quantidade de amostras retornadas\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var count = jsonData.ReportDataGridSampleDtos.length;\r",
+							"    pm.expect(count);//to.equal(60);\r",
+							"    console.log (jsonData);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Origin",
+						"value": "https://acqualab-dev.mylimsportal.cloud",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://labsoft-portal-api-dev.azurewebsites.net/api/v1/Samples/Reports?pageNumber=1&pageSize=50000",
+					"protocol": "https",
+					"host": [
+						"labsoft-portal-api-dev",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Samples",
+						"Reports"
+					],
+					"query": [
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "pageSize",
+							"value": "50000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - Files",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Verificar a quantidade de amostras com relatórios retornadas\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    var count = jsonData.length;\r",
+							"    pm.expect(count);//to.equal(60);\r",
+							"    console.log (jsonData);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "origin",
+						"value": "https://acqualab-dev.mylimsportal.cloud",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"sampleIds\": [507099, 507125]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://labsoft-portal-api-dev.azurewebsites.net/api/v1/Samples/AllFiles",
+					"protocol": "https",
+					"host": [
+						"labsoft-portal-api-dev",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"api",
+						"v1",
+						"Samples",
+						"AllFiles"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsImtpZCI6IkM3QUYyOUFDQzM1QThFRURGOTkxQkI3MjUzM0M0MUM5IiwidHlwIjoiSldUIn0.eyJuYmYiOjE2ODMxNDIxMjgsImV4cCI6MTY4MzE0NTcyOCwiaXNzIjoiaHR0cHM6Ly9sYWJzb2Z0LWlkZW50aXR5Y2VudGVyLXN0cy1wcmQuYXp1cmV3ZWJzaXRlcy5uZXQiLCJhdWQiOlsiUG9ydGFsX0FQSSIsImh0dHBzOi8vbGFic29mdC1pZGVudGl0eWNlbnRlci1zdHMtcHJkLmF6dXJld2Vic2l0ZXMubmV0L3Jlc291cmNlcyJdLCJjbGllbnRfaWQiOiJQb3J0YWxfUmVhY3RfRGV2Iiwic3ViIjoiOWU1YTgzOGUtN2M2Zi00NGFkLWI2OGQtZTk4ZmJlYjJhZmM1IiwiYXV0aF90aW1lIjoxNjgzMTQyMTI4LCJpZHAiOiJsb2NhbCIsImVtYWlsIjoiam9hby5wZWxpc3NvbkBsYWJzb2Z0LmNvbS5iciIsImlhdCI6MTY4MzE0MjEyOCwic2NvcGUiOlsiUG9ydGFsX0FQSV9SZWFkIl0sImFtciI6WyJwd2QiXX0.MjhuIti7ps92NM_946MhLnTA93WxpGFtrjLL3PCfARALQO1f1erPL7nBwtjsXYuM6IXJ86mYQJaDu9KFsWuCHH0sUmqA1XPt6erETwfiKPD6V5u0-WWbTFfX3tP9jmVdaieHGQe1ba7sosy9T8p4Ughffvb84l35aPQZjGoVCc4OnbKSgzjtyXdoXMRHFHv5w9d07oIkZYG0TeVe-H8aPEoTxT_j8yyVipY4hEoxCbFKv-shRQQalsaObUS88OQMqVzAr3eH6r06YCgTE__JYT93cGeZoqxBlKcy20qwNkbQK0u3VLtkHXItYjoAb54Nu6RFGrYa8gvcjHm8twDikw",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
